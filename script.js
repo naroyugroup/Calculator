@@ -2,7 +2,16 @@ class Calculator {
   constructor(previousOperandTextElement, currentOperandTextElement) {
     this.previousOperandTextElement = previousOperandTextElement
     this.currentOperandTextElement = currentOperandTextElement
+    this.powerOn = true
     this.clear()
+  }
+
+  togglePower() {
+    this.powerOn = !this.powerOn
+    if (!this.powerOn) {
+      this.clear()
+      this.updateDisplay()
+    }
   }
 
   clear() {
@@ -74,6 +83,11 @@ class Calculator {
   }
 
   updateDisplay() {
+    if (!this.powerOn) {
+      this.currentOperandTextElement.innerText = ''
+      this.previousOperandTextElement.innerText = ''
+      return
+    }
     this.currentOperandTextElement.innerText =
       this.getDisplayNumber(this.currentOperand)
     if (this.operation != null) {
@@ -91,13 +105,19 @@ const operationButtons = document.querySelectorAll('[data-operation]')
 const equalsButton = document.querySelector('[data-equals]')
 const deleteButton = document.querySelector('[data-delete]')
 const allClearButton = document.querySelector('[data-all-clear]')
+const powerButton = document.querySelector('[data-power]')
 const previousOperandTextElement = document.querySelector('[data-previous-operand]')
 const currentOperandTextElement = document.querySelector('[data-current-operand]')
 
 const calculator = new Calculator(previousOperandTextElement, currentOperandTextElement)
 
+powerButton.addEventListener('click', button => {
+  calculator.togglePower()
+})
+
 numberButtons.forEach(button => {
   button.addEventListener('click', () => {
+    if (!calculator.powerOn) return
     calculator.appendNumber(button.innerText)
     calculator.updateDisplay()
   })
@@ -105,22 +125,26 @@ numberButtons.forEach(button => {
 
 operationButtons.forEach(button => {
   button.addEventListener('click', () => {
+    if (!calculator.powerOn) return
     calculator.chooseOperation(button.innerText)
     calculator.updateDisplay()
   })
 })
 
 equalsButton.addEventListener('click', button => {
+  if (!calculator.powerOn) return
   calculator.compute()
   calculator.updateDisplay()
 })
 
 allClearButton.addEventListener('click', button => {
+  if (!calculator.powerOn) return
   calculator.clear()
   calculator.updateDisplay()
 })
 
 deleteButton.addEventListener('click', button => {
+  if (!calculator.powerOn) return
   calculator.delete()
   calculator.updateDisplay()
 })

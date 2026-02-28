@@ -31,6 +31,14 @@ body {
   background-color: rgba(255, 255, 255, .9);
 }
 
+[data-power] {
+  background-color: rgba(255, 100, 100, .75);
+}
+
+[data-power]:hover {
+  background-color: rgba(255, 100, 100, .9);
+}
+
 .span-two {
   grid-column: span 2;
 }
