@@ -15,6 +15,16 @@ class Calculator {
     this.currentOperand = this.currentOperand.toString().slice(0, -1)
   }
 
+  squareRoot() {
+    const current = parseFloat(this.currentOperand)
+    if (isNaN(current)) return
+    if (current < 0) {
+      this.currentOperand = 'Error'
+      return
+    }
+    this.currentOperand = Math.sqrt(current)
+  }
+
   appendNumber(number) {
     if (number === '.' && this.currentOperand.includes('.')) return
     this.currentOperand = this.currentOperand.toString() + number.toString()
@@ -91,6 +101,7 @@ const operationButtons = document.querySelectorAll('[data-operation]')
 const equalsButton = document.querySelector('[data-equals]')
 const deleteButton = document.querySelector('[data-delete]')
 const allClearButton = document.querySelector('[data-all-clear]')
+const squareRootButton = document.querySelector('[data-square-root]')
 const previousOperandTextElement = document.querySelector('[data-previous-operand]')
 const currentOperandTextElement = document.querySelector('[data-current-operand]')
 
@@ -122,5 +133,10 @@ allClearButton.addEventListener('click', button => {
 
 deleteButton.addEventListener('click', button => {
   calculator.delete()
+  calculator.updateDisplay()
+})
+
+squareRootButton.addEventListener('click', button => {
+  calculator.squareRoot()
   calculator.updateDisplay()
 })
